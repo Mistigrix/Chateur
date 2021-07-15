@@ -1,16 +1,24 @@
-# This is a sample Python script.
+import tkinter
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from interface import Interface
 
+window = tkinter.Tk()
+window.title('Chateur')
+window.config(bg='#b0b2d3')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+screen_x = int(window.winfo_screenwidth())
+screen_y = int(window.winfo_screenheight())
+window_x = 900
+window_y = 600
 
+posX = (screen_x // 2) - (window_x // 2)
+posY = (screen_y // 2) - (window_y // 2)
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+geo = f"{window_x}x{window_y}+{posX}+{posY}"
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+window.geometry(geo)
+
+interface = Interface(window)
+
+window.mainloop()
+
