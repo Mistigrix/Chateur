@@ -1,5 +1,7 @@
 import sqlite3
 
+from user import User
+
 
 class DataBase:
     """Classe gerant toute la base de donnée"""
@@ -15,10 +17,7 @@ class DataBase:
         user = self.cursor.fetchone()
 
         if user:
-            return {
-                'username':user[1],
-                'password': user[2]
-            }
+            return User(user[1], password[2])
         return None
 
     def create_user(self, username, password):

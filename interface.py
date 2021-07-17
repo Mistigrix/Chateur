@@ -1,6 +1,7 @@
 from functools import partial
 import tkinter
 from database import DataBase
+from functions import *
 
 
 class Interface(tkinter.Frame):
@@ -8,12 +9,11 @@ class Interface(tkinter.Frame):
     def __init__(self, window):
         tkinter.Frame.__init__(self, window)
 
-        self.user = {}
-        self.connect = False
+        self.user = get_user()
         self.database = DataBase('database.db')
         self.pack(expand=True)
 
-        if not self.connect:
+        if not self.user.connect:
             self.login()
         else:
             self.home()
@@ -32,7 +32,7 @@ class Interface(tkinter.Frame):
 
         frame = tkinter.Frame(self, bg='#f3f3f6', width=700, height=450, borderwidth=1)
 
-        tkinter.Label(frame, text=f"Bienvenue sur Chateur {self.user['username']}", bg='#f3f3f6', font=('Courriel', 20)).place(x=200, y=200)
+        tkinter.Label(frame, text=f"Bienvenue sur Chateur {self.user.username}", bg='#f3f3f6', font=('Courriel', 20)).place(x=200, y=200)
 
         frame.pack()
 
@@ -57,7 +57,8 @@ class Interface(tkinter.Frame):
         entry_password = tkinter.Entry(frame, width=35, font=('Courrier', 10))
         entry_password.place(x=100, y=200)
 
-        remember = tkinter.Checkbutton(frame, text="Garder sa Session ouverte")
+        self.var_case = tkinter.BooleanVar()
+        remember = tkinter.Checkbutton(frame, text="Garder sa Session ouverte", variable=self.var_case)
         remember.place(x=50, y=250)
 
         tkinter.Button(frame, text="S'Inscrire", font=('Courrier', 10),
@@ -95,7 +96,8 @@ class Interface(tkinter.Frame):
         entry_confirm = tkinter.Entry(frame, width=35, font=('Courrier', 10))
         entry_confirm.place(x=100, y=200)
 
-        remember = tkinter.Checkbutton(frame, text="Garder sa Session ouverte")
+        self.var_case = tkinter.BooleanVar()
+        remember = tkinter.Checkbutton(frame, text="Garder sa Session ouverte", variable=self.var_case)
         remember.place(x=50, y=250)
 
         tkinter.Button(frame, text="Se connecter", font=('Courrier', 10),
@@ -114,14 +116,20 @@ class Interface(tkinter.Frame):
             confirm = entry_confirm.get()
             if password == confirm:
                 self.user = self.database.create_user(username, password)
-                self.connect = True
+                self.user.connect = True
+                # verifier si l'utilisateur souhaite enregistrer ses données
+                if self.var_case.get():
+                    set_user(self.user)
                 self.home()
         else:
             # verifier le client est un membre
             if self.database.check_member(username, password):
                 # redirection vers la page d'acceuil
-                self.connect = True
                 self.user = self.database.check_member(username, password)
+                self.user.connect = True
+                # verifier si l'utilisateur souhaite enregistrer ses données
+                if self.var_case.get():
+                    set_user(self.user)
                 self.home()
             else:
                 print("Le client n'existe pas")
