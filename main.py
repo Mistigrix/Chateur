@@ -22,3 +22,4 @@ interface = Interface(window)
 
 window.mainloop()
 
+interface.database.close()
