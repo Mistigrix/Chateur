@@ -4,6 +4,7 @@ from interface import Interface
 
 window = tkinter.Tk()
 window.title('Chateur')
+window.iconbitmap('icon.ico')
 window.config(bg='#b0b2d3')
 
 screen_x = int(window.winfo_screenwidth())
@@ -22,3 +23,4 @@ interface = Interface(window)
 
 window.mainloop()
 
+interface.database.close()
