@@ -1,5 +1,4 @@
 import sqlite3
-
 from user import User
 
 
@@ -18,6 +17,7 @@ class DataBase:
 
         if user:
             return User(user[1], password[2])
+
         return None
 
     def create_user(self, username, password):
@@ -25,10 +25,7 @@ class DataBase:
         self.cursor.execute("insert into users values(?,?,?)", new_user)
         self.connection.commit()
 
-        return {
-            'username': username,
-            'password': password
-        }
+        return User(new_user[1], password[2])
 
     def close(self):
         self.connection.close()

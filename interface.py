@@ -3,7 +3,6 @@ import tkinter
 from database import DataBase
 from functions import *
 
-
 class Interface(tkinter.Frame):
 
     def __init__(self, window):
